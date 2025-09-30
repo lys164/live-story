@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AIKO 页面预览</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.9/dist/tailwind.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js" defer></script>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      body {
+        background: radial-gradient(circle at top, #1f2937, #0f172a 60%);
+        font-family: "MiSans", "SF Pro", system-ui, sans-serif;
+      }
+      @media (min-width: 1024px) {
+        .phone-frame {
+          width: 420px;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen text-white">
+    <header class="py-12 text-center">
+      <h1 class="text-4xl font-bold tracking-wide">AIKO 设计稿预览中心</h1>
+      <p class="mx-auto mt-3 max-w-2xl text-base text-white/70">
+        剧本页与直播页分别独立于 <code>script.html</code> 与 <code>live.html</code>，此页作为入口与数据概览，同时通过 Tailwind CDN 与 Apache ECharts 5 CDN 构建。
+      </p>
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-white/80">
+        <a
+          class="rounded-full bg-white/10 px-5 py-2 backdrop-blur hover:bg-white/20"
+          href="script.html"
+        >剧本页预览</a>
+        <a
+          class="rounded-full bg-white/10 px-5 py-2 backdrop-blur hover:bg-white/20"
+          href="live.html"
+        >直播页预览</a>
+        <a
+          class="rounded-full bg-white/10 px-5 py-2 backdrop-blur hover:bg-white/20"
+          href="https://www.figma.com/design/sNBKXg43hxl5R3zfTAYdwz/AIKO?node-id=202-1378&m=dev"
+          target="_blank"
+        >剧本页 Figma</a>
+        <a
+          class="rounded-full bg-white/10 px-5 py-2 backdrop-blur hover:bg-white/20"
+          href="https://www.figma.com/design/sNBKXg43hxl5R3zfTAYdwz/AIKO?node-id=225-2653&m=dev"
+          target="_blank"
+        >直播页 Figma</a>
+      </div>
+    </header>
+
+    <main class="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 pb-16 lg:grid lg:grid-cols-[1fr_360px]">
+      <section class="rounded-3xl bg-white/5 p-6 shadow-lg">
+        <h2 class="text-2xl font-semibold">页面结构说明</h2>
+        <p class="mt-4 text-sm leading-relaxed text-white/70">
+          访问上方链接可查看独立页面文件。项目同时保留示例图表，演示如何利用 Apache ECharts 展示剧本与直播热度趋势。
+        </p>
+        <div id="heatmap" class="mt-6 h-[340px] w-full"></div>
+      </section>
+
+      <aside class="grid gap-6">
+        <div class="rounded-3xl bg-[#20232f] p-6 shadow-lg">
+          <h3 class="text-xl font-semibold">快速预览</h3>
+          <p class="mt-3 text-sm text-white/70">若仅需快速浏览，可通过下方按钮打开独立页面。</p>
+          <div class="mt-5 flex flex-col gap-3">
+            <a class="rounded-lg bg-indigo-500 px-4 py-3 text-center text-sm font-semibold shadow hover:bg-indigo-400" href="script.html">打开剧本页</a>
+            <a class="rounded-lg bg-amber-500 px-4 py-3 text-center text-sm font-semibold text-black shadow hover:bg-amber-400" href="live.html">打开直播页</a>
+          </div>
+        </div>
+        <div class="rounded-3xl bg-white/5 p-6 shadow-lg">
+          <h3 class="text-xl font-semibold">资源说明</h3>
+          <ul class="mt-4 list-disc space-y-2 pl-5 text-sm text-white/70">
+            <li>Tailwind CDN：<code>cdn.jsdelivr.net/npm/tailwindcss@3.4.9</code></li>
+            <li>Apache ECharts 5 CDN：<code>cdn.jsdelivr.net/npm/echarts@5.5.0</code></li>
+            <li>设计稿来源：Figma AIKO 项目剧本页与直播页节点</li>
+            <li>本地文件：<code>script.html</code>、<code>live.html</code>、<code>index.html</code></li>
+          </ul>
+        </div>
+      </aside>
+    </main>
+
+    <footer class="border-t border-white/10 py-6 text-center text-xs text-white/60">
+      © 2025 AIKO Demo. 使用 Tailwind CSS 与 Apache ECharts 构建。
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const chart = echarts.init(document.getElementById('heatmap'));
+        chart.setOption({
+          backgroundColor: 'transparent',
+          grid: { left: 45, right: 20, top: 50, bottom: 35 },
+          tooltip: { trigger: 'axis' },
+          legend: {
+            data: ['剧本页', '直播页'],
+            textStyle: { color: '#cbd5f5' },
+            top: 10
+          },
+          xAxis: {
+            type: 'category',
+            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            axisLine: { lineStyle: { color: '#334155' } },
+            axisLabel: { color: '#cbd5f5' },
+            axisTick: { show: false }
+          },
+          yAxis: {
+            type: 'value',
+            axisLine: { lineStyle: { color: '#334155' } },
+            splitLine: { lineStyle: { color: 'rgba(148, 163, 184, 0.12)' } },
+            axisLabel: { color: '#cbd5f5' }
+          },
+          color: ['#60a5fa', '#fbbf24'],
+          series: [
+            {
+              name: '剧本页',
+              type: 'line',
+              smooth: true,
+              symbol: 'circle',
+              symbolSize: 8,
+              areaStyle: { opacity: 0.18 },
+              data: [820, 932, 901, 934, 1290, 1330, 1320]
+            },
+            {
+              name: '直播页',
+              type: 'line',
+              smooth: true,
+              symbol: 'circle',
+              symbolSize: 8,
+              areaStyle: { opacity: 0.18 },
+              data: [620, 732, 701, 734, 1090, 1130, 1120]
+            }
+          ]
+        });
+
+        window.addEventListener('resize', () => chart.resize());
+      });
+    </script>
+  </body>
+</html>
