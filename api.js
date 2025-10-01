@@ -4,8 +4,19 @@ import admin from 'firebase-admin';
 import fs from 'fs';
 import path from 'path';
 
-const serviceAccountPath = path.resolve('./billionare-501bf-firebase-adminsdk-fbsvc-dd7efe7111.json');
-const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf-8'));
+const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH || path.resolve('./serviceAccountKey.local.json');
+
+function loadServiceAccount() {
+  try {
+    const raw = fs.readFileSync(serviceAccountPath, 'utf-8');
+    return JSON.parse(raw);
+  } catch (error) {
+    console.error('Failed to read Firebase service account. Did you configure FIREBASE_SERVICE_ACCOUNT_PATH?', error);
+    throw error;
+  }
+}
+
+const serviceAccount = loadServiceAccount();
 
 if (!admin.apps.length) {
   admin.initializeApp({

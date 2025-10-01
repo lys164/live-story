@@ -1,7 +1,7 @@
 // npm install firebase-admin
 
 const admin = require('firebase-admin');
-const serviceAccount = require('/Users/a0/Desktop/aiko/billionare-501bf-firebase-adminsdk-fbsvc-dd7efe7111.json');
+const serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT_PATH || './serviceAccountKey.local.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
