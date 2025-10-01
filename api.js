@@ -22,13 +22,39 @@ app.use(express.json());
 const STORY_COLLECTION = 'livestory';
 const STORY_DOC = '泰坦尼克';
 
-app.get('/story', async (req, res) => {
+function mapStoryDocument(doc) {
+  if (!doc.exists) return null;
+  const data = doc.data() || {};
+  return {
+    id: doc.id,
+    Storyname: data.Storyname || data.storyname || data.display_fields?.Storyname || data.display_fields?.storyname || data.playname || doc.id,
+    Storyimage: data.Storyimage || data.storyImage || data.display_fields?.Storyimage || null,
+    raw: data
+  };
+}
+
+app.get('/stories', async (_req, res) => {
   try {
-    const doc = await db.collection(STORY_COLLECTION).doc(STORY_DOC).get();
+    const snapshot = await db.collection(STORY_COLLECTION).get();
+    const stories = snapshot.docs
+      .map((doc) => mapStoryDocument(doc))
+      .filter(Boolean)
+      .map(({ raw, ...rest }) => rest);
+    return res.json({ stories });
+  } catch (error) {
+    console.error('List stories error:', error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.get('/story/:id?', async (req, res) => {
+  const docId = req.params.id || STORY_DOC;
+  try {
+    const doc = await db.collection(STORY_COLLECTION).doc(docId).get();
     if (!doc.exists) {
       return res.status(404).json({ message: 'Story not found' });
     }
-    return res.json(doc.data());
+    return res.json({ id: doc.id, ...doc.data() });
   } catch (error) {
     console.error('Fetch story error:', error);
     return res.status(500).json({ message: 'Internal server error' });

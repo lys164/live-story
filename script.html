@@ -1,189 +1,171 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AIKO 剧本页</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              surface: '#20232f',
-              surfaceSoft: 'rgba(255,255,255,0.08)'
-            },
-            fontFamily: {
-              misans: ['"MiSans"', '"SF Pro Display"', 'system-ui', 'sans-serif']
-            }
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AIKO 剧本页</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            surface: '#20232f',
+            surfaceSoft: 'rgba(255,255,255,0.08)'
+          },
+          fontFamily: {
+            misans: ['"MiSans"', '"SF Pro Display"', 'system-ui', 'sans-serif']
           }
         }
       }
-    </script>
-    <style>
-      :root { color-scheme: dark; }
-      body { background: #090b16; }
-    </style>
-  </head>
-  <body class="min-h-screen font-misans text-white py-10">
-    <main class="mx-auto w-[90vw] max-w-[420px] rounded-[32px] bg-surface px-5 pb-6 pt-6 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
-      <!-- 状态栏 -->
-      <div class="flex items-center justify-between text-[17px] font-semibold">
-        <span>9:41</span>
-        <div class="flex items-center gap-1 text-xs">
-          <span class="inline-flex h-[11px] w-[18px] items-center justify-end rounded-sm border border-white/40 px-[1px]">
-            <span class="h-[8px] w-[8px] rounded-sm bg-white"></span>
-          </span>
-          <span class="inline-block h-[10px] w-[12px] rounded-[1px] border border-white/50"></span>
-          <span class="inline-flex h-[12px] w-[24px] items-center rounded-full bg-white/20">
-            <span class="ml-[2px] h-[8px] w-[16px] rounded-full bg-white"></span>
-          </span>
+    }
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    body {
+      background: #090b16;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen font-misans text-white py-10">
+  <main
+    class="mx-auto w-[90vw] max-w-[420px] rounded-[32px] bg-surface px-5 pb-6 pt-6 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+    <!-- 状态栏 -->
+    <div class="flex items-center justify-between text-[17px] font-semibold">
+      <span>9:41</span>
+      <div class="flex items-center gap-1 text-xs">
+        <span class="inline-flex h-[11px] w-[18px] items-center justify-end rounded-sm border border-white/40 px-[1px]">
+          <span class="h-[8px] w-[8px] rounded-sm bg-white"></span>
+        </span>
+        <span class="inline-block h-[10px] w-[12px] rounded-[1px] border border-white/50"></span>
+        <span class="inline-flex h-[12px] w-[24px] items-center rounded-full bg-white/20">
+          <span class="ml-[2px] h-[8px] w-[16px] rounded-full bg-white"></span>
+        </span>
+      </div>
+    </div>
+
+    <!-- 顶部标题 -->
+    <header class="mt-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-[26px] font-bold leading-tight">AIKO 剧本库</h1>
+        <div class="mt-4 flex items-center gap-2 rounded-full bg-surfaceSoft px-1 py-1">
+          <button class="rounded-full bg-white/20 px-4 py-1 text-sm font-semibold">推荐</button>
+          <button class="rounded-full px-4 py-1 text-sm text-white/60">最新</button>
+          <button class="rounded-full px-4 py-1 text-sm text-white/60">人气</button>
         </div>
       </div>
+      <div class="relative h-12 w-12 overflow-hidden rounded-full border border-white/15">
+        <img
+          src="https://s3-alpha-sig.figma.com/img/db3f/cb3c/94c78966bd84a97db22b4587e11fa2db?Expires=1760313600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=cEeIJdtzGnfMwYmYalDSzMjvJieMSs687kNo9Z6vRlp8~AtERPS5JHju~t9R4u7US8LM9KYHJW65IDEKfrCdGyVHBH~IoRRRSX4GPHi9sugDNoc47ybQ~OFUxbV2ZmnngDoV0o-NOR8CowSEEM~609hcfcxUCWkoBI42S6ALgTJZRckltUO0wYvt8-zF3X9GQczdq4V3u6ZTpUcfQA4~yPdSoYEgbrZGi-ECPEPvlalZ5JWgupOibGS0bdBaMjpHZ-4IgH-GHrT1~P~4rtwmxsNs0Ky~c8eNyXI~u~DYSrKVamZFCfkgUY4okeo5m4BajXGA-U5vSpESKkXFQWxLcw__"
+          alt="头像" class="h-full w-full object-cover" />
+      </div>
+    </header>
 
-      <!-- 顶部标题 -->
-      <header class="mt-6 flex items-center justify-between">
-        <div>
-          <h1 class="text-[26px] font-bold leading-tight">无限世界</h1>
-          <div class="mt-4 flex items-center gap-2 rounded-full bg-surfaceSoft px-1 py-1">
-            <button class="rounded-full bg-white/20 px-4 py-1 text-sm font-semibold">推荐</button>
-            <button class="rounded-full px-4 py-1 text-sm text-white/60">最新</button>
-            <button class="rounded-full px-4 py-1 text-sm text-white/60">人气</button>
+    <!-- 内容卡片 -->
+    <section id="story-grid" class="mt-6 grid grid-cols-2 gap-4"></section>
+    <!-- 底部快捷匹配 -->
+    <section class="mt-6 rounded-[26px] bg-white text-surface px-5 py-4 shadow-[0_18px_60px_rgba(0,0,0,0.40)]">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img
+            src="https://s3-alpha-sig.figma.com/img/d6bf/4575/7b7ec6be4ba9050f02d8bb51c7e591e8?Expires=1760313600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=RmUyhGKLV0KS9KS9LqT6y0Iyov0InLWf6biuF4KzIEJ-7g7uxevtpLP-~QaaGa-3HML799ZnPVHP60W7~s-5VsfxVcaZmZXYEHGp-BxiU5P~6qhxSnONXtsf3pDjO847ko6yjWLrJfuJZ4L14KxbpZwgdEwhNn6-Q-lv1rQip3C~mZBk8OGPxuk0cVw2waQGn-bbOhjYshcAOkFAwMnHv7HqJ0cmeiBhRZhuydtGDfnTnEVtwgUV2M8HsQenkuvW8RVuZWxDXHZyHpv2EiR4n~uWr4rOiaWh5AJmKxD7ZMn4~-hc4BCVU4PVDGiYcd~3xrOaMjTZvqCH8zJqoayQOw__"
+            alt="吉祥物" class="h-12 w-12 rounded-full object-cover" />
+          <div>
+            <p class="text-lg font-semibold">快速匹配</p>
+            <p class="text-xs text-black/60">聚合更多志同道合的伙伴</p>
           </div>
         </div>
-        <div class="relative h-12 w-12 overflow-hidden rounded-full border border-white/15">
-          <img
-            src="https://s3-alpha-sig.figma.com/img/db3f/cb3c/94c78966bd84a97db22b4587e11fa2db?Expires=1760313600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=cEeIJdtzGnfMwYmYalDSzMjvJieMSs687kNo9Z6vRlp8~AtERPS5JHju~t9R4u7US8LM9KYHJW65IDEKfrCdGyVHBH~IoRRRSX4GPHi9sugDNoc47ybQ~OFUxbV2ZmnngDoV0o-NOR8CowSEEM~609hcfcxUCWkoBI42S6ALgTJZRckltUO0wYvt8-zF3X9GQczdq4V3u6ZTpUcfQA4~yPdSoYEgbrZGi-ECPEPvlalZ5JWgupOibGS0bdBaMjpHZ-4IgH-GHrT1~P~4rtwmxsNs0Ky~c8eNyXI~u~DYSrKVamZFCfkgUY4okeo5m4BajXGA-U5vSpESKkXFQWxLcw__"
-            alt="头像"
-            class="h-full w-full object-cover"
-          />
-        </div>
-      </header>
+        <button class="flex items-center gap-2 rounded-full bg-surface px-4 py-2 text-sm font-semibold text-white">
+          <span>⚡</span>
+          立即加入
+        </button>
+      </div>
+    </section>
+  </main>
 
-      <!-- 内容卡片 -->
-      <section class="mt-6 grid grid-cols-2 gap-4">
-        <!-- 卡片模板 -->
-        <article class="group relative overflow-hidden rounded-[26px] bg-white/10">
-          <img
-            src="https://s3-alpha-sig.figma.com/img/2b7d/d4df/b673e80b37fbd420fcac001b5a6ba391?Expires=1760313600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=ftj1xNpW7dUoCXw8Q8S31wByt0t7M~NlDrcRInMjr2J2f3fbXPbNW4ge35kA5m5QsUR-PrGQ~45Cs0HIK1oXJ95U-vRkeFSwNK7PLl3PW~5cr1cRYi3hEQybnS6se82y8QpPr9m39Jsr~j3bGuT9FrutLLX5EON~jDwVuGZa2EkcD0TcY0MqxZ9kR~tk8IFFDInmNrH7jcWLdd9KohrAKcDQb~U1QFrL7TnI75NTRv6DMS129MteBzO5dJ7Sh5uiZ3XiNARFpxHROYDJlKc54WManB4v6xlQQ-7LF0MI8xfnhbaRL1MGqJ3bircBi0d7S7g8sp3ZI0Nx7EyzSnYbeQ__"
-            alt="黑蔷薇监狱"
-            class="h-32 w-full object-cover"
-          />
+  <script>
+    const API_BASE = (() => {
+      if (window.location.protocol === 'file:') return 'http://localhost:3001';
+      if (window.location.hostname === 'localhost') return 'http://localhost:3001';
+      return '';
+    })();
+
+    const refs = {
+      grid: document.getElementById('story-grid'),
+      title: document.querySelector('header h1')
+    };
+
+    function createStoryCard(story) {
+      const image = story.Storyimage || 'https://cdn.jsdelivr.net/gh/lys164/assets@main/aiko/default-cover.jpg';
+      const title = story.Storyname || story.id || '剧本';
+      const link = `live.html${story.id ? `?story=${encodeURIComponent(story.id)}` : ''}`;
+
+      const wrapper = document.createElement('article');
+      wrapper.className = 'group relative overflow-hidden rounded-[26px] bg-white/10';
+      wrapper.innerHTML = `
+          <a href="${link}" class="absolute inset-0 z-10"></a>
+          <img src="${image}" alt="${title}" class="h-32 w-full object-cover" />
           <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80"></div>
-          <div class="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold">
-            <span>💎</span>
-            <span>12</span>
-          </div>
           <div class="absolute bottom-3 right-3 flex items-center gap-1 rounded-full bg-white px-3 py-1 text-xs font-semibold text-surface">
             <span>▶</span>
             <span>播放</span>
           </div>
           <div class="relative space-y-2 p-4">
-            <h3 class="text-sm font-semibold">黑蔷薇监狱</h3>
+            <h3 class="text-sm font-semibold">
+              <a href="${link}" class="relative z-20 block hover:text-white">${title}</a>
+            </h3>
             <div class="flex items-center justify-between text-[13px] text-white/70">
-              <span class="inline-flex items-center gap-1"><span>👥</span>3/3</span>
-              <button class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-surface shadow">加入</button>
+              <span class="inline-flex items-center gap-1"><span>👥</span>在线匹配</span>
+              <a href="${link}" class="relative z-20 rounded-full bg-white px-3 py-1 text-xs font-semibold text-surface shadow">进入</a>
             </div>
           </div>
-        </article>
+        `;
+      return wrapper;
+    }
 
-        <article class="group relative overflow-hidden rounded-[26px] bg-white/10">
-          <img
-            src="https://s3-alpha-sig.figma.com/img/ff7c/a211/7a7a842ed09bec88abd88a7c0dfe8fdb?Expires=1760313600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Qilz6GnCFA3MQpny21H3Ycf3V2k~vR5ITw5n2HKNzouNcsZxnYop5E18a5un2scUbt2zPkLALVvnjFfEDF0xMHr~rkt4K6IMH39jwLWOFzJEsJbxx1k~MbCOcd83rx9730JLM1STbTe1WX2mVjSHtLGg4-jpKGrb~Jh0aYcx7j5cr~87ae2McqUAuj~ophqQZwEJF4x3i7Mwfi61p2mPtaJCJoHoJYKyEp6dkx2SROLYYuM5gegwjjxUcrSaOk3TiwDX97l9jADTxPQsGPH2VH0bNzqI0kA929yod91BdwTK9kSQ5UANUTSJNDJHjGqbenQ6v0R3tft3S3RRGMNxlA__"
-            alt="心动的信号"
-            class="h-32 w-full object-cover"
-          />
-          <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80"></div>
-          <div class="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold">
-            <span>💎</span>
-            <span>22</span>
-          </div>
-          <div class="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold">
-            <span>💗</span>
-            <span>＞100</span>
-          </div>
-          <div class="absolute bottom-3 right-3 flex items-center gap-1 rounded-full bg-white px-3 py-1 text-xs font-semibold text-surface">
-            <span>▶</span>
-            <span>播放</span>
-          </div>
-          <div class="relative space-y-2 p-4">
-            <h3 class="text-sm font-semibold">心动的信号</h3>
-            <div class="flex items-center justify-between text-[13px] text-white/70">
-              <span class="inline-flex items-center gap-1"><span>👥</span>6/6</span>
-              <button class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-surface shadow">加入</button>
-            </div>
-          </div>
-        </article>
+    async function loadStories() {
+      refs.grid.innerHTML = `
+          <div class="col-span-2 flex items-center justify-center rounded-[24px] bg-white/5 py-16 text-sm text-white/60">
+            加载剧本列表中...
+          </div>`;
+      try {
+        const res = await fetch(`${API_BASE}/stories`);
+        if (!res.ok) throw new Error(await res.text());
+        const data = await res.json();
+        const stories = Array.isArray(data.stories) ? data.stories : [];
+        if (!stories.length) {
+          refs.grid.innerHTML = `
+              <div class="col-span-2 rounded-[24px] bg-white/5 p-6 text-center text-sm text-white/60">
+                当前没有可用的剧本，请稍后再试。
+              </div>`;
+          return;
+        }
+        refs.grid.innerHTML = '';
+        stories.forEach((story) => {
+          refs.grid.appendChild(createStoryCard(story));
+        });
+        if (stories.length === 1) {
+          refs.title.textContent = stories[0].Storyname || '剧本库';
+        }
+      } catch (error) {
+        console.error('Load stories failed', error);
+        refs.grid.innerHTML = `
+            <div class="col-span-2 space-y-4 rounded-[24px] bg-white/5 p-6 text-center text-sm">
+              <p class="text-red-400">加载剧本列表失败：${error.message || error}</p>
+              <button id="retry-btn" class="rounded-full bg-white/20 px-4 py-2 text-xs font-semibold text-white hover:bg-white/30">重试</button>
+            </div>`;
+        const retry = document.getElementById('retry-btn');
+        retry?.addEventListener('click', loadStories);
+      }
+    }
 
-        <article class="group relative overflow-hidden rounded-[26px] bg-white/10">
-          <img
-            src="https://s3-alpha-sig.figma.com/img/f69b/7e08/0309946eedf2c67712491f0c86fd4ca5?Expires=1760313600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=hBFF8y3fVVwHukBNmK3-YD8D1QNb~~GBEKp40JcefB1i1YgiTjUh6Tp3382m3H6ZXxcXbTRzVkjyk-XpIvhLgh-CTWIq~mY59zP~6V3MN9P7MMr5P6gLAw7DJi-oDnqYMqYGfVgrJOhTaDB~8chvuYncXjb-CDCkrHqKQAoUYBMaxXqK392XeJU7n7JYqTVqYkPVQ5GHuTiTYE2T1jcbtuew74ix4i6Q~2iVS1Q7P6VMctB4b2C0jhSy4cu8l29NuCNaSOs8cnZWYXcVCyEczZvy4Ifff2et7J4W7g9GZx40k~fHH8afaF58W0XY7naG5cLku~ggBO3hHxpX8a1mCw__"
-            alt="重生之我是女帝"
-            class="h-32 w-full object-cover"
-          />
-          <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80"></div>
-          <div class="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold">
-            <span>💎</span>
-            <span>40</span>
-          </div>
-          <div class="absolute bottom-3 right-3 flex items-center gap-1 rounded-full bg-white px-3 py-1 text-xs font-semibold text-surface">
-            <span>▶</span>
-            <span>播放</span>
-          </div>
-          <div class="relative space-y-2 p-4">
-            <h3 class="text-sm font-semibold">重生之我是女帝</h3>
-            <div class="flex items-center justify-between text-[13px] text-white/70">
-              <span class="inline-flex items-center gap-1"><span>👥</span>10/10</span>
-              <button class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-surface shadow">加入</button>
-            </div>
-          </div>
-        </article>
+    loadStories();
+  </script>
+</body>
 
-        <article class="group relative overflow-hidden rounded-[26px] bg-white/10">
-          <img
-            src="https://s3-alpha-sig.figma.com/img/5d4a/986c/7d1a86eb9ce6bc8e973f0312e93daca6?Expires=1760313600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=B5JJ5gZ-u6JbbMYneNe~gkPfr6ryTC8G98dqxi4-fHwluVRgLPQaMa1B~WpEwIBHjLAQy-cpAVdnZsbmbYcmrxZKswUyaxTmaA7lksL0KHiCbfijNT88ClXpnaPFLhmDbIyVNfA9KUt6nXAzo3UVxperCosutWIqF8-9QyfBYHlc4~nsze4ZtpNxnEUoceKxEQNYtlMbskxU7hv17TQE8Gio4NM9cUa9VnmzzxhXOQlN-IEwgt-mgaJwDgr6240si4yVSK5Lv14QDbILxnakI74EqTT5olQP3Bbos301Vgev4P-7uJt9BTiar93LqSRO-UYMO-f2WEovRGyX8ZvOxw__"
-            alt="攻略魔王"
-            class="h-32 w-full object-cover"
-          />
-          <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80"></div>
-          <div class="absolute left-3 top-3 flex items-center gap-1 rounded-full bg-black/60 px-3 py-1 text-xs font-semibold">
-            <span>💎</span>
-            <span>12</span>
-          </div>
-          <div class="absolute bottom-3 right-3 flex items-center gap-1 rounded-full bg-white px-3 py-1 text-xs font-semibold text-surface">
-            <span>▶</span>
-            <span>播放</span>
-          </div>
-          <div class="relative space-y-2 p-4">
-            <h3 class="text-sm font-semibold">攻略魔王</h3>
-            <div class="flex items-center justify-between text-[13px] text-white/70">
-              <span class="inline-flex items-center gap-1"><span>👥</span>2/3</span>
-              <button class="rounded-full bg-white px-3 py-1 text-xs font-semibold text-surface shadow">加入</button>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      <!-- 底部快捷匹配 -->
-      <section class="mt-6 rounded-[26px] bg-white text-surface px-5 py-4 shadow-[0_18px_60px_rgba(0,0,0,0.40)]">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-3">
-            <img
-              src="https://s3-alpha-sig.figma.com/img/d6bf/4575/7b7ec6be4ba9050f02d8bb51c7e591e8?Expires=1760313600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=RmUyhGKLV0KS9KS9LqT6y0Iyov0InLWf6biuF4KzIEJ-7g7uxevtpLP-~QaaGa-3HML799ZnPVHP60W7~s-5VsfxVcaZmZXYEHGp-BxiU5P~6qhxSnONXtsf3pDjO847ko6yjWLrJfuJZ4L14KxbpZwgdEwhNn6-Q-lv1rQip3C~mZBk8OGPxuk0cVw2waQGn-bbOhjYshcAOkFAwMnHv7HqJ0cmeiBhRZhuydtGDfnTnEVtwgUV2M8HsQenkuvW8RVuZWxDXHZyHpv2EiR4n~uWr4rOiaWh5AJmKxD7ZMn4~-hc4BCVU4PVDGiYcd~3xrOaMjTZvqCH8zJqoayQOw__"
-              alt="吉祥物"
-              class="h-12 w-12 rounded-full object-cover"
-            />
-            <div>
-              <p class="text-lg font-semibold">快速匹配</p>
-              <p class="text-xs text-black/60">聚合更多志同道合的伙伴</p>
-            </div>
-          </div>
-          <button class="flex items-center gap-2 rounded-full bg-surface px-4 py-2 text-sm font-semibold text-white">
-            <span>⚡</span>
-            立即加入
-          </button>
-        </div>
-      </section>
-    </main>
-  </body>
 </html>

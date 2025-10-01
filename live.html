@@ -248,14 +248,53 @@
     };
 
     let storyData = null;
+    let narrativeBlocks = [];
+    let storyTitle = '心动的信号';
     let currentIndex = 0;
     let currentDialogueIndex = 0;
     let voteCounts = { left: 0, right: 0 };
     let lastEngagement = null;
+    let decisionHistoryKey = 'decisionHistory';
     const AUTO_ADVANCE_DELAY = 5000;
     let autoAdvanceTimer = null;
     let lastRenderedDialogueKey = null;
     let lastRenderedBlockIndex = null;
+
+    function resolveNarrativeBlocks(data) {
+      if (!data) return [];
+      if (Array.isArray(data.narrative_block)) return data.narrative_block;
+      const mf = data.model_facing_content;
+      if (mf && mf.display_chapter_one_script && Array.isArray(mf.display_chapter_one_script.narrative_block)) {
+        return mf.display_chapter_one_script.narrative_block;
+      }
+      if (data.display_fields && Array.isArray(data.display_fields.narrative_block)) {
+        return data.display_fields.narrative_block;
+      }
+      const nestedMf = data.display_fields && data.display_fields.model_facing_content;
+      if (nestedMf && nestedMf.display_chapter_one_script && Array.isArray(nestedMf.display_chapter_one_script.narrative_block)) {
+        return nestedMf.display_chapter_one_script.narrative_block;
+      }
+      return [];
+    }
+
+    function resolveStoryTitle(data) {
+      if (!data) return '心动的信号';
+      return (
+        data.Storyname ||
+        data.storyname ||
+        (data.display_fields && (data.display_fields.Storyname || data.display_fields.storyname)) ||
+        data.playname ||
+        '心动的信号'
+      );
+    }
+
+    function resolveStoryCover(data, blocks) {
+      if (!data) return null;
+      if (data.display_fields && data.display_fields.Storyimage) return data.display_fields.Storyimage;
+      if (data.storyImage) return data.storyImage;
+      if (Array.isArray(blocks) && blocks.length && blocks[0].background_image) return blocks[0].background_image;
+      return null;
+    }
 
     function clearAutoAdvance() {
       if (autoAdvanceTimer) {
@@ -266,9 +305,9 @@
 
     function scheduleAutoAdvance() {
       clearAutoAdvance();
-      if (!storyData || !Array.isArray(storyData.narrative_block)) return;
-      if (currentIndex >= storyData.narrative_block.length) return;
-      const block = storyData.narrative_block[currentIndex];
+      if (!storyData || !Array.isArray(narrativeBlocks)) return;
+      if (currentIndex >= narrativeBlocks.length) return;
+      const block = narrativeBlocks[currentIndex];
       if (!block) return;
       if (refs.decisionModal.classList.contains('active')) return;
       autoAdvanceTimer = setTimeout(() => {
@@ -281,8 +320,8 @@
     }
 
     function advanceNarrativeStep({ triggeredByAuto = false } = {}) {
-      if (!storyData || !Array.isArray(storyData.narrative_block)) return;
-      const blocks = storyData.narrative_block;
+      if (!storyData || !Array.isArray(narrativeBlocks)) return;
+      const blocks = narrativeBlocks;
       if (currentIndex >= blocks.length) {
         clearAutoAdvance();
         return;
@@ -335,16 +374,28 @@
       return res.json();
     }
 
+    function getStoryIdFromQuery() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('story');
+    }
+
     async function loadStory() {
+      const storyId = getStoryIdFromQuery();
       try {
-        const data = await fetchJSON(`${API_BASE}/story`);
+        const endpoint = storyId ? `${API_BASE}/story/${encodeURIComponent(storyId)}` : `${API_BASE}/story`;
+        const data = await fetchJSON(endpoint);
         storyData = data;
+        narrativeBlocks = resolveNarrativeBlocks(data);
         currentIndex = 0;
         voteCounts = { left: 0, right: 0 };
-        refs.playTitle.textContent = data.playname || '心动的信号';
+        storyTitle = resolveStoryTitle(data);
+        refs.playTitle.textContent = storyTitle;
+        decisionHistoryKey = `decisionHistory:${storyTitle}`;
         currentDialogueIndex = 0;
         lastRenderedBlockIndex = null;
         lastRenderedDialogueKey = null;
+        const cover = resolveStoryCover(data, narrativeBlocks);
+        if (cover) refs.storyImage.src = cover;
         renderCurrentState();
       } catch (error) {
         refs.storyDialogues.innerHTML = `<p class="text-sm text-red-400">无法加载剧本：${error.message}</p>`;
@@ -354,16 +405,35 @@
 
     function renderCurrentState() {
       clearAutoAdvance();
-      if (!storyData || !Array.isArray(storyData.narrative_block)) return;
-      const blocks = storyData.narrative_block;
+      if (!storyData || !Array.isArray(narrativeBlocks)) {
+        refs.storyDialogues.innerHTML = '<p class="text-sm text-white/70">正在获取剧本内容...</p>';
+        refs.nextBtn.disabled = false;
+        refs.nextBtn.innerHTML = '<span>↻</span> 重试加载';
+        refs.nextBtn.onclick = () => {
+          userInteracted();
+          loadStory();
+        };
+        return;
+      }
+      const blocks = narrativeBlocks;
 
       if (currentIndex >= blocks.length) {
-        refs.storyDialogues.innerHTML = '<p class="text-sm text-white/60">剧情播放完毕。</p>';
+        refs.storyImage.src = refs.storyImage.src;
         refs.storyMeta.textContent = `段落 ${blocks.length}/${blocks.length}`;
+        refs.storyDialogues.innerHTML = `
+            <div class="flex flex-col items-center justify-center gap-3 rounded-2xl bg-black/30 px-4 py-10">
+              <div class="h-10 w-10 animate-spin rounded-full border-4 border-white/20 border-t-white"></div>
+              <p class="text-sm text-white/80">票数计算中，请稍候...</p>
+            </div>`;
+        refs.progressTitle.textContent = '票数统计中';
+        refs.progressFill.style.width = '50%';
+        refs.voteLeft.textContent = '票数统计中';
+        refs.voteRight.textContent = '请稍候';
+        refs.voteOptions.innerHTML = '<p class="text-xs text-white/50">正在统计本场互动结果...</p>';
+        refs.audiencePrompt.textContent = '票数计算中';
         refs.nextBtn.disabled = true;
-        refs.nextBtn.textContent = '剧终';
-        refs.voteOptions.innerHTML = '';
-        refs.audiencePrompt.textContent = '感谢观看';
+        refs.nextBtn.textContent = '票数计算中';
+        refs.decisionModal.classList.remove('active');
         clearAutoAdvance();
         return;
       }
@@ -441,7 +511,7 @@
 
         if (block.decision_point) {
           const dp = block.decision_point;
-          const history = JSON.parse(localStorage.getItem('decisionHistory') || '{}');
+          const history = JSON.parse(localStorage.getItem(decisionHistoryKey) || '{}');
           if (!history[dp.decision_id]) {
             refs.decisionPrompt.textContent = dp.prompt;
             refs.decisionOptions.innerHTML = (dp.options || [])
@@ -461,13 +531,9 @@
 
       const hasMoreDialogues = dialogues.length && currentDialogueIndex < dialogues.length - 1;
       const hasMoreBlocks = currentIndex < blocks.length - 1;
-      if (!hasMoreDialogues && !hasMoreBlocks) {
-        refs.nextBtn.disabled = false;
-        refs.nextBtn.innerHTML = '<span>▶</span> 播放';
-      } else {
-        refs.nextBtn.disabled = false;
-        refs.nextBtn.innerHTML = '<span>▶</span> 播放';
-      }
+      const hasAnyFuture = hasMoreDialogues || hasMoreBlocks;
+      refs.nextBtn.disabled = !hasAnyFuture;
+      refs.nextBtn.innerHTML = hasAnyFuture ? '<span>▶</span> 播放' : '票数计算中';
 
       lastRenderedBlockIndex = currentIndex;
 
@@ -522,9 +588,9 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ decisionId, optionId, playerId })
         });
-        const history = JSON.parse(localStorage.getItem('decisionHistory') || '{}');
+        const history = JSON.parse(localStorage.getItem(decisionHistoryKey) || '{}');
         history[decisionId] = { optionId, time: Date.now() };
-        localStorage.setItem('decisionHistory', JSON.stringify(history));
+        localStorage.setItem(decisionHistoryKey, JSON.stringify(history));
         appendDanmu(`玩家决策 → ${optionId}`);
         refs.decisionModal.classList.remove('active');
         scheduleAutoAdvance();
